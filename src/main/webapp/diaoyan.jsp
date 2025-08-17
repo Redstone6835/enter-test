@@ -6,13 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<!-- 防止未登录就进入网站 -->
+<% if (session.getAttribute("name") == null) {
+    response.sendRedirect(request.getContextPath() + "/index.jsp");
+}
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>调研</title>
-    <style type="text/css">
+    <style>
         . {
             padding: 0;
             margin: 0;
@@ -129,7 +136,7 @@
 </head>
 <body>
 <div id="main">
-    <form id="survey-form" action="/" method="post">
+    <form id="survey-form" action="${pageContext.request.contextPath}/survey" method="post">
         <div id="survey">
             <h1>请输入您的游戏ID：</h1>
             <input type="text" name="id" id="gameid">
@@ -138,46 +145,54 @@
             <input type="text" name="age" id="age">
             <br>
             <h1>请选择您的特长：</h1>
-            <input type="radio" name="techang" id="techang1">
+            <input type="radio" name="techang" id="techang1" value="SURVIVAL">
             <label for="techang">生电</label><br>
-            <input type="radio" name="techang" id="techang2">
+            <input type="radio" name="techang" id="techang2" value="DIGITAL">
             <label for="techang">数电</label><br>
-            <input type="radio" name="techang" id="techang3">
+            <input type="radio" name="techang" id="techang3" value="MECHANICAL">
             <label for="techang">械电</label><br>
-            <input type="radio" name="techang" id="techang4">
-            <label for="techang">模电</label><br>
-            <input type="radio" name="techang" id="techang5">
+            <input type="radio" name="techang" id="techang4" value="BUILDING">
             <label for="techang">建筑</label><br>
-            <input type="radio" name="techang" id="techang6">
-            <label for="techang">速通</label><br>
+            <input type="radio" name="techang" id="techang5" value="CODING">
+            <label for="techang">编程</label><br>
+            <input type="radio" name="techang" id="techang6" value="NONE">
+            <label for="techang">无</label><br>
             <button type="submit" id="submit">提交</button>
-        </div></form></div>
+        </div>
+    </form>
+</div>
+
 <script type="text/javascript">
-    document.getElementById('survey-form').addEvenListener('submit',async (e) =>{
+    document.getElementById('survey-form').addEventListener('submit',async (e) =>{
         e.preventDefault();
 
         const sf = new FormData(e.target);
-        const sfObj = Object.fromEntries(FormData.entries());
+        const sfObj = Object.fromEntries(sf.entries());
         //保留数据
         const localData = {
             gameid: sfObj.id,
-            age: sfobj.age
+            age: sfObj.age
         };
         //发送后端的数据
+
         const backendData = {
             type: sfObj.techang
         };
+
         try {
             localStorage.setItem('survey-result',JSON.stringify({
                 data: localData,
                 timestamp: new Date().getTime()
             }));
-
-            const response = await fetch('', {
+            console.log(JSON.stringify(backendData))
+            // 这里写后端路径
+            const response = await fetch('${pageContext.request.contextPath}/survey', {
                 method: 'POST',
                 body: JSON.stringify(backendData)
             });
             const data = await response.json();
+
+            console.log(data)
 
             localStorage.setItem('problem', JSON.stringify({
                 data,
@@ -185,12 +200,13 @@
             }));
 
             //跳转到结果页面
-            window.location.href = 'dati.html';
+            window.location.href = '${pageContext.request.contextPath}/dati.jsp';
         } catch (error) {
             console.error('提交失败',error);
             alert('提交失败，请重试');
         }
     })
 </script>
+
 </body>
 </html>

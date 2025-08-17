@@ -1,4 +1,4 @@
-package space.jsserver.entertest.model;
+package space.jsserver.entertest.problem;
 
 public class Problem {
     private String id;

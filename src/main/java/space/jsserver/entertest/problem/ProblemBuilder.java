@@ -1,4 +1,6 @@
-package space.jsserver.entertest.model;
+package space.jsserver.entertest.problem;
+
+import space.jsserver.entertest.model.Hobby;
 
 import java.util.ArrayList;
 

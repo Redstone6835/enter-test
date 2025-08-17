@@ -5,29 +5,43 @@ import java.io.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
-public class HelloServlet extends HttpServlet {
-    private String message;
+@WebServlet(name = "login", value = "/login")
+public class LoginServlet extends HttpServlet {
 
-    public void init() {
-        message = "Hello World!";
-    }
+    @Override
+    public void init() {}
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+        doPost(request, response);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // Handle POST requests if needed
-        doGet(request, response);
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
+
+        if (name != null && !name.isEmpty() && password != null && !password.isEmpty()) {
+            HttpSession session = request.getSession();
+            session.setAttribute("name", name);
+
+            out.println("<html><head>");
+            out.println("<meta http-equiv='refresh' content='3;url=" + request.getContextPath() + "/diaoyan.jsp'>");
+            out.println("<title>登录成功</title></head><body>");
+            out.println("<h1>登录成功，3 秒后自动跳转到主页...</h1>");
+            out.println("</body></html>");
+        } else {
+            out.println("<html><body>");
+            out.println("<h1>Login failed. Please enter valid credentials.</h1>");
+            out.println("</body></html>");
+            response.sendRedirect("index.jsp");
+        }
     }
 
+    @Override
     public void destroy() {
     }
 }
