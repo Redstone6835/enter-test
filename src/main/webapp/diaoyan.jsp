@@ -184,7 +184,7 @@
                 data: localData,
                 timestamp: new Date().getTime()
             }));
-            console.log(JSON.stringify(backendData))
+            console.log(JSON.stringify(backendData));
             // 这里写后端路径
             const response = await fetch('${pageContext.request.contextPath}/survey', {
                 method: 'POST',
@@ -192,7 +192,7 @@
             });
             const data = await response.json();
 
-            console.log(data)
+            console.log(data);
 
             localStorage.setItem('problem', JSON.stringify({
                 data,
