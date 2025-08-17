@@ -155,6 +155,9 @@
             background-color: #d1e5ff;
         }
 
+        .problem-title p {
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
@@ -243,10 +246,9 @@
     }
     if (response) {
         const { data, timestamp } = JSON.parse(response);
-        let current = data.head;
         var i = 0;
         for(i;i<22;i+=1){
-            const problem = Problem.fromJson(current.data);
+            const problem = Problem.fromJson(data[i]);
             if(problem.isImg === true){
                 createProblem2(i+1,problem.imgUrl,problem.id);
                 var title = document.getElementById(`pt` + (i+1));
@@ -258,7 +260,6 @@
                 var p=title.getElementsByTagName("p")[0];
                 p.innerHTML=problem.description;
             }
-            current = current.next;
         }
         //生成提交按钮
         const submit = document.createElement('input');
