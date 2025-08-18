@@ -38,7 +38,8 @@ public class GetSurveyServlet extends HttpServlet {
                 .randomGenerate();
 
 
-        String jsonResponse = new Gson().toJson(generatedProblems).replace("\n", "</br>");
+
+        String jsonResponse = new Gson().toJson(generatedProblems);
         System.out.println("Generated Problems: " + jsonResponse);
         resp.getWriter().write(jsonResponse);
     }

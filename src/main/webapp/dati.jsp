@@ -314,7 +314,11 @@
             result_Data[j] = {id: j+1,result: sfObj[answer]};
         }
         const linked_result = buildLinkedList(result_Data);
-        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data})
+        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data});
+
+        console.log(linked_result);
+        console.log(linked_result_data);
+
         try {
             const response = await fetch('${pageContext.request.contextPath}/survey', {
                 method: 'POST',
@@ -329,10 +333,9 @@
         }
         //清除localstorage数据
         localStorage.removeItem('problem');
-        localStorage.removeItem('survey-result')
-    })
+        localStorage.removeItem('survey-result');
+    });
 
-    }
 </script>
 
 </body>
