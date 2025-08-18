@@ -162,8 +162,7 @@
 </head>
 <body>
 <div id="main">
-    <form id="form">
-
+    <form id="form" action="${pageContext.request.contextPath}/survey" method="get">
     </form></div>
 <script>
     class Problem {
@@ -235,7 +234,6 @@
         const imgDiv = document.createElement('div');
         imgDiv.className = "img";
         imgDiv.id = "img"+id.toString();
-
         document.getElementById(`pt` + n.toString()).appendChild(imgDiv);
 
         const img = document.createElement('img');
@@ -278,7 +276,6 @@
 
     if (response) {
         const { data, timestamp1 } = JSON.parse(response);
-
         var i = 0;
         for(i;i<9;i+=1){
             const problem = Problem.fromJson(data[i]);
@@ -305,7 +302,7 @@
 
     document.getElementById('form').addEventListener('submit',async (e) =>{
         e.preventDefault();
-        const { survey_data, timestamp2 } = JSON.parse(survey_result_n);
+        const survey_data = JSON.parse(survey_result_n);
         const sf = new FormData(e.target);
         const sfObj = Object.fromEntries(sf.entries());
         const result_Data = [];
@@ -314,6 +311,9 @@
             result_Data[j] = {id: j+1,result: sfObj[answer]};
         }
         const linked_result = buildLinkedList(result_Data);
+        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data["data"]});
+        alert(linked_result_data);
+
         const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data});
 
         console.log(linked_result);
@@ -324,7 +324,6 @@
                 method: 'POST',
                 body: linked_result_data
             });
-
             //跳转到结果页面
             window.location.href = '${pageContext.request.contextPath}/index.jsp';
         } catch (error) {
@@ -333,7 +332,8 @@
         }
         //清除localstorage数据
         localStorage.removeItem('problem');
-        localStorage.removeItem('survey-result');
+        localStorage.removeItem('survey-result')
+   
     });
 
 </script>
