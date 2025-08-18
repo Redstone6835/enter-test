@@ -13,6 +13,8 @@
 }
 %>
 
+<% if ((Boolean) session.getAttribute("got") == true) response.sendRedirect(request.getContextPath() + "/dati.jsp");
+else { %>
 <!DOCTYPE html>
 <html lang="zh-hans">
 <head>
@@ -171,7 +173,8 @@
         //保留数据
         const localData = {
             gameid: sfObj.id,
-            age: sfObj.age
+            age: sfObj.age,
+            hobby: sfObj.techang
         };
         //发送后端的数据
 
@@ -210,3 +213,4 @@
 
 </body>
 </html>
+<% } %>

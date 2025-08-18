@@ -7,11 +7,24 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<!-- 防止未登录就进入网站 -->
+<% String datimsg = (String) session.getAttribute("datimsg"); %>
+<% if (datimsg != null) { %>
+<script>
+    alert("<%= datimsg %>");
+</script>
+<% } %>
+
 <% if (session.getAttribute("name") == null) {
     response.sendRedirect(request.getContextPath() + "/index.jsp");
 }
 %>
+<% if ((Boolean) session.getAttribute("finished") == true) {
+    session.setAttribute("msg", "您已经完成答题，不能重复答题！");
+    response.sendRedirect(request.getContextPath() + "index.jsp");
+
+}%>
+<% if ((Boolean) session.getAttribute("got") == true) { %>
+
 <!DOCTYPE html>
 <html lang="zh-hans">
 <head>
@@ -300,7 +313,7 @@
 
     }
 
-    document.getElementById('form').addEventListener('submit',async (e) =>{
+    document.getElementById('form').addEventListener('submit',async (e) => {
         e.preventDefault();
         const survey_data = JSON.parse(survey_result_n);
         const sf = new FormData(e.target);
@@ -311,32 +324,25 @@
             result_Data[j] = {id: j+1,result: sfObj[answer]};
         }
         const linked_result = buildLinkedList(result_Data);
-        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data["data"]});
-        alert(linked_result_data);
-
         const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data});
 
-        console.log(linked_result);
-        console.log(linked_result_data);
-
         try {
-            const response = await fetch('${pageContext.request.contextPath}/survey', {
+            const response = await fetch('${pageContext.request.contextPath}/answer', {
                 method: 'POST',
                 body: linked_result_data
             });
-            //跳转到结果页面
+            // 跳转回去
             window.location.href = '${pageContext.request.contextPath}/index.jsp';
         } catch (error) {
             console.error('提交失败',error);
-            alrt('提交失败，请重试');
+            alert('提交失败，请重试');
         }
-        //清除localstorage数据
-        localStorage.removeItem('problem');
-        localStorage.removeItem('survey-result')
-   
     });
 
 </script>
 
 </body>
 </html>
+<% } else {
+    response.sendRedirect(request.getContextPath() + "/diaoyan.jsp");
+}%>

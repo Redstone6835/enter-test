@@ -1,4 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%
+    // 1) 优先处理重定向：必须在任何 HTML/JS 输出之前调用 sendRedirect 或 forward
+    Boolean logged = (Boolean) session.getAttribute("login");
+    if (logged != null && logged) {
+        response.sendRedirect(request.getContextPath() + "/dati.jsp");
+        return; // 一定要 return，防止后续输出
+    }
+
+// 2) 读取一次性 session 消息（来自 Servlet 的跨请求消息）
+    String msg = (String) session.getAttribute("msg");
+// 不在这里输出 alert，等页面主体输出前再输出脚本并移除 session
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -190,6 +204,30 @@
     </style>
 </head>
 <body>
+
+<%
+    // 3) 如果有跨请求的 session 消息（通常来自 sendRedirect 情况），在页面加载时弹出并移除
+    if (msg != null) {
+%>
+<script>
+    alert("<%= msg.replace("\"","\\\"").replace("\n","\\n") %>");
+</script>
+<%
+        session.removeAttribute("msg");
+    }
+
+// 4) 继续显示 request 范围内的错误信息（如果 Servlet 使用 forward 返回时）
+    String error = (String) request.getAttribute("errorMessage");
+    if (error != null) {
+%>
+<script>
+    // 也可以用 alert 或把错误渲染在 DOM 中
+    alert("<%= error.replace("\"","\\\"").replace("\n","\\n") %>");
+</script>
+<%
+    }
+%>
+
 <div id="main">
     <div id="denglu">
         <div id="biaodan">
@@ -201,12 +239,6 @@
             <form id="form" action="${pageContext.request.contextPath}/login" method="post">
                 <label for="name"></label><input type="text" name="name" placeholder="请输入您的用户名" id="name" >
                 <label for="password"></label><input type="password" name="password" placeholder="请输入答题序列号" id="password" >
-
-                <% String error = (String) request.getAttribute("errorMessage"); %>
-                <% if (error != null) { %>
-                <div style="color:red;"><%= error %></div>
-                <% } %>
-
                 <input id="submit" type="submit" value="登录">
             </form>
         </div>
