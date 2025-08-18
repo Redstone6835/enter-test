@@ -5,7 +5,7 @@
   Time: 21:13
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <!-- 防止未登录就进入网站 -->
 <% if (session.getAttribute("name") == null) {
@@ -13,7 +13,7 @@
 }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -162,7 +162,11 @@
 </head>
 <body>
 <div id="main">
+<<<<<<< HEAD
     <form id="form" action="${pageContext.request.contextPath}/survey" method="get">
+=======
+    <form id="form">
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
 
     </form></div>
 <script>
@@ -184,6 +188,10 @@
     }
     //跨页面接受localstorage数据
     const response = localStorage.getItem('problem');
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
     const survey_result_n = localStorage.getItem('survey-result');
 
     //生成答题容器函数
@@ -191,6 +199,10 @@
         //问题容器
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
         problemDiv.id = `problem` + n.toString();
         document.getElementById('form').appendChild(problemDiv);
         //题目容器
@@ -211,11 +223,19 @@
         input.rows = '7';
         input.cols = '30';
         document.getElementById(`problem` + n.toString()).appendChild(input);
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
     }
     function createProblem2(n,url,id){
         //问题容器
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
         problemDiv.id = `problem` + n.toString();
         document.getElementById('form').appendChild(problemDiv);
         //题目容器
@@ -226,11 +246,21 @@
         //p标签
         const p = document.createElement('p');
         document.getElementById(`pt` + n.toString()).appendChild(p);
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
         //图片
         const imgDiv = document.createElement('div');
         imgDiv.className = "img";
         imgDiv.id = "img"+id.toString();
+<<<<<<< HEAD
         document.getElementById(`pt` + n.toString()).appendChild(imgDiv);
+=======
+
+        document.getElementById(`pt` + n.toString()).appendChild(imgDiv);
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
         const img = document.createElement('img');
         img.id = id;
         img.src = url;
@@ -238,6 +268,10 @@
 
         //输入框
         const input = document.createElement('textarea');
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
         input.id = n.toString();
         input.className = "answer";
         input.type = 'text';
@@ -270,13 +304,17 @@
 
     if (response) {
         const { data, timestamp1 } = JSON.parse(response);
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
         var i = 0;
         for(i;i<9;i+=1){
             const problem = Problem.fromJson(data[i]);
             if(problem.isImg === true){
                 createProblem2(i+1,problem.imgUrl,problem.id);
                 var title = document.getElementById(`pt` + (i+1));
-                var p=title.getElementsByTagName("p");
+                var p=title.getElementsByTagName("p")[0];
                 p.innerHTML=problem.description;
             }else{
                 createProblem1(i+1);
@@ -323,6 +361,11 @@
         localStorage.removeItem('problem');
         localStorage.removeItem('survey-result')
     })
+<<<<<<< HEAD
+=======
+
+    }
+>>>>>>> cd5daaa08fd109c8f779c6dbed4c48adeb6a27ba
 </script>
 
 </body>

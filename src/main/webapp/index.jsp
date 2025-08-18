@@ -201,6 +201,12 @@
             <form id="form" action="${pageContext.request.contextPath}/login" method="post">
                 <label for="name"></label><input type="text" name="name" placeholder="请输入您的用户名" id="name" >
                 <label for="password"></label><input type="password" name="password" placeholder="请输入答题序列号" id="password" >
+
+                <% String error = (String) request.getAttribute("errorMessage"); %>
+                <% if (error != null) { %>
+                <div style="color:red;"><%= error %></div>
+                <% } %>
+
                 <input id="submit" type="submit" value="登录">
             </form>
         </div>
