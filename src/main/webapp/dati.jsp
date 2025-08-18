@@ -5,7 +5,7 @@
   Time: 21:13
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <!-- 防止未登录就进入网站 -->
 <% if (session.getAttribute("name") == null) {
@@ -13,7 +13,7 @@
 }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -162,7 +162,7 @@
 </head>
 <body>
 <div id="main">
-    <form id="form" action="${pageContext.request.contextPath}/" method="get">
+    <form id="form">
 
     </form></div>
 <script>
@@ -247,12 +247,12 @@
     if (response) {
         const { data, timestamp } = JSON.parse(response);
         var i = 0;
-        for(i;i<22;i+=1){
+        for(i;i<9;i+=1){
             const problem = Problem.fromJson(data[i]);
             if(problem.isImg === true){
                 createProblem2(i+1,problem.imgUrl,problem.id);
                 var title = document.getElementById(`pt` + (i+1));
-                var p=title.getElementsByTagName("p");
+                var p=title.getElementsByTagName("p")[0];
                 p.innerHTML=problem.description;
             }else{
                 createProblem1(i+1);
@@ -267,9 +267,11 @@
         submit.type = 'submit';
         submit.value = '提交';
         document.getElementById('form').appendChild(submit);
+
+
         //清除localstorage数据
-        localStorage.removeItem('problem');
-        localStorage.removeItem('survey-result')
+        // localStorage.removeItem('problem');
+        // localStorage.removeItem('survey-result')
     }
 
 </script>

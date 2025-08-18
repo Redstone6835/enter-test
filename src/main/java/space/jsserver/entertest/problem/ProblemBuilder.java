@@ -29,59 +29,66 @@ public class ProblemBuilder {
     }
 
     public ArrayList<Problem> randomGenerate() {
-        List<Integer> basicNumbers = randomNumberGenerate(Problems.BASICS.length, 7);
-        List<Integer> redstoneNumbers = randomNumberGenerate(Problems.REDSTONES.length, 7);
-        List<Integer> chattingNumbers = randomNumberGenerate(Problems.CHATTING.length, 6);
+        List<Integer> basicNumbers = randomNumberGenerate(Problems.BASICS.length, 2);
+        List<Integer> redstoneNumbers = randomNumberGenerate(Problems.REDSTONES.length, 1);
+        List<Integer> chattingNumbers = randomNumberGenerate(Problems.CHATTING.length, 4);
 
         ArrayList<Problem> problems = new ArrayList<>();
 
-        for (int i = 0; i < 20; i++) {
-            if (i < 7) {
+        for (int i = 0; i < 7; i++) {
+            if (i < 2) {
                 int index = basicNumbers.get(i);
-                problems.add(new Problem(String.valueOf(i + 1), Problems.BASICS[index], false, ""));
-            } else if (i < 14) {
-                int index = redstoneNumbers.get(i - 7);
+                Problem z = Problems.BASICS[index];
+                z.setId(String.valueOf(i + 1));
+                problems.add(z);
+            } else if (i < 3) {
+                int index = redstoneNumbers.getFirst();
                 problems.add(new Problem(String.valueOf(i + 1), Problems.REDSTONES[index], false, ""));
             } else {
-                int index = chattingNumbers.get(i - 14);
+                int index = chattingNumbers.get(i - 3);
                 problems.add(new Problem(String.valueOf(i + 1), Problems.CHATTING[index], false, ""));
             }
         }
 
         switch (hobby) {
-            case NONE, BUILDING -> {
-                problems.add(new Problem("21", "请描述您最喜欢的MC游戏玩法。", false, ""));
-                problems.add(new Problem("22", "您加入我服的直接目的是为了玩游戏还是交友？", false, ""));
+            case BUILDING -> {
+                problems.get(2).setDescription("你所擅长的建筑风格是什么？");
+                problems.add(new Problem("8", "请描述您最喜欢的MC游戏玩法。", false, ""));
+                problems.add(new Problem("9", "您加入我服的直接目的是为了玩游戏还是交友？", false, ""));
+            }
+            case NONE -> {
+                problems.add(new Problem("8", "请描述您最喜欢的MC游戏玩法。", false, ""));
+                problems.add(new Problem("9", "您加入我服的直接目的是为了玩游戏还是交友？", false, ""));
             }
             case SURVIVAL -> {
-                problems.add(new Problem("21",
+                problems.add(new Problem("8",
                         Problems.HIGH_LEVEL_REDSTONE[randomNumberGenerate(2, 2).getFirst()],
                         false, ""));
-                problems.add(new Problem("22",
+                problems.add(new Problem("9",
                         Problems.HIGH_LEVEL_SURVIVAL,
                         false, ""));
             }
             case MECHANICAL -> {
-                problems.add(new Problem("21",
+                problems.add(new Problem("8",
                         Problems.HIGH_LEVEL_REDSTONE[randomNumberGenerate(2, 2).getFirst()],
                         false, ""));
-                problems.add(new Problem("22",
+                problems.add(new Problem("9",
                         Problems.HIGH_LEVEL_REDSTONE[randomNumberGenerate(2, 2).get(1)],
                         false, ""));
             }
             case DIGITAL -> {
-                problems.add(new Problem("21",
+                problems.add(new Problem("8",
                         Problems.HIGH_LEVEL_REDSTONE[randomNumberGenerate(2, 2).getFirst()],
                         false, ""));
-                problems.add(new Problem("22",
+                problems.add(new Problem("9",
                         Problems.HIGH_LEVEL_DIGITAL,
                         false, ""));
             }
             case CODING -> {
-                problems.add(new Problem("21",
+                problems.add(new Problem("8",
                     Problems.HIGH_LEVEL_REDSTONE[randomNumberGenerate(2, 2).get(1)],
                     false, ""));
-                problems.add(new Problem("22",
+                problems.add(new Problem("9",
                         Problems.HIGH_LEVEL_CODING[randomNumberGenerate(2, 2).getFirst()],
                         false, ""));
 
