@@ -309,7 +309,7 @@
         const sf = new FormData(e.target);
         const sfObj = Object.fromEntries(sf.entries());
         const result_Data = [];
-        for(var j = 0;j<10;j++){
+        for(var j = 0;j<9;j++){
             const answer = "answer"+(j+1).toString();
             result_Data[j] = {id: j+1,result: sfObj[answer]};
         }
