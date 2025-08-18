@@ -184,51 +184,60 @@
     }
     //跨页面接受localstorage数据
     const response = localStorage.getItem('problem');
-    const survey_result = localStorage.getItem('survey-result');
+
+    const survey_result_n = localStorage.getItem('survey-result');
+
     //生成答题容器函数
     function createProblem1(n){
         //问题容器
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
-        problemDiv.id = `problem` + n;
+
+        problemDiv.id = `problem` + n.toString();
         document.getElementById('form').appendChild(problemDiv);
         //题目容器
         const titleDiv = document.createElement('div');
-        titleDiv.id = `pt` + n;
+        titleDiv.id = `pt` + n.toString();
         titleDiv.className = 'problem-title';
-        document.getElementById(`problem` + n).appendChild(titleDiv);
+        document.getElementById(`problem` + n.toString()).appendChild(titleDiv);
         //p标签
         const p = document.createElement('p');
-        document.getElementById(`pt` + n).appendChild(p);
+        document.getElementById(`pt` + n.toString()).appendChild(p);
         //输入框
         const input = document.createElement('textarea');
-        input.id = `text` + n;
+        input.id = n.toString();
+        input.className = "answer";
         input.type = 'text';
-        input.name = `answer` + n;
+        input.name = `answer`+n.toString();
         input.placeholder = '请输入答案';
         input.rows = '7';
         input.cols = '30';
-        document.getElementById(`problem` + n).appendChild(input);
+        document.getElementById(`problem` + n.toString()).appendChild(input);
+
     }
     function createProblem2(n,url,id){
         //问题容器
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
-        problemDiv.id = `problem` + n;
+
+        problemDiv.id = `problem` + n.toString();
         document.getElementById('form').appendChild(problemDiv);
         //题目容器
         const titleDiv = document.createElement('div');
-        titleDiv.id = `pt` + n;
+        titleDiv.id = `pt` + n.toString();
         titleDiv.className = 'problem-title';
-        document.getElementById(`problem` + n).appendChild(titleDiv);
+        document.getElementById(`problem` + n.toString()).appendChild(titleDiv);
         //p标签
         const p = document.createElement('p');
-        document.getElementById(`pt` + n).appendChild(p);
+        document.getElementById(`pt` + n.toString()).appendChild(p);
+
         //图片
         const imgDiv = document.createElement('div');
         imgDiv.className = "img";
         imgDiv.id = "img"+id.toString();
-        document.getElementById(`pt` + n).appendChild(imgDiv);
+
+        document.getElementById(`pt` + n.toString()).appendChild(imgDiv);
+
         const img = document.createElement('img');
         img.id = id;
         img.src = url;
@@ -236,16 +245,40 @@
 
         //输入框
         const input = document.createElement('textarea');
-        input.id = `text` + n;
+
+        input.id = n.toString();
+        input.className = "answer";
         input.type = 'text';
-        input.name = `answer` + n;
+        input.name = `answer`+n.toString();
         input.placeholder = '请输入答案';
         input.rows = '7';
         input.cols = '30';
-        document.getElementById(`problem` + n).appendChild(input);
+        document.getElementById(`problem` + n.toString()).appendChild(input);
     }
+    // 构建链表结构
+    function buildLinkedList(items) {
+        if (items.length === 0) return null;
+
+        let head = {
+            data: items[0],
+            next: null
+        };
+
+        let current = head;
+        for (let i = 1; i < items.length; i++) {
+            current.next = {
+                data: items[i],
+                next: null
+            };
+            current = current.next;
+        }
+
+        return head;
+    }
+
     if (response) {
-        const { data, timestamp } = JSON.parse(response);
+        const { data, timestamp1 } = JSON.parse(response);
+
         var i = 0;
         for(i;i<9;i+=1){
             const problem = Problem.fromJson(data[i]);
@@ -268,12 +301,38 @@
         submit.value = '提交';
         document.getElementById('form').appendChild(submit);
 
-
-        //清除localstorage数据
-        // localStorage.removeItem('problem');
-        // localStorage.removeItem('survey-result')
     }
 
+    document.getElementById('form').addEventListener('submit',async (e) =>{
+        e.preventDefault();
+        const { survey_data, timestamp2 } = JSON.parse(survey_result_n);
+        const sf = new FormData(e.target);
+        const sfObj = Object.fromEntries(sf.entries());
+        const result_Data = [];
+        for(var j = 0;j<10;j++){
+            const answer = "answer"+(j+1).toString();
+            result_Data[j] = {id: j+1,result: sfObj[answer]};
+        }
+        const linked_result = buildLinkedList(result_Data);
+        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data})
+        try {
+            const response = await fetch('${pageContext.request.contextPath}/survey', {
+                method: 'POST',
+                body: linked_result_data
+            });
+
+            //跳转到结果页面
+            window.location.href = '${pageContext.request.contextPath}/index.jsp';
+        } catch (error) {
+            console.error('提交失败',error);
+            alrt('提交失败，请重试');
+        }
+        //清除localstorage数据
+        localStorage.removeItem('problem');
+        localStorage.removeItem('survey-result')
+    })
+
+    }
 </script>
 
 </body>

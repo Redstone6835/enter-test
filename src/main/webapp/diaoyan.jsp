@@ -146,6 +146,19 @@
             <br>
             <h1>请选择您的特长：</h1>
             <input type="radio" name="techang" id="techang1" value="SURVIVAL">
+<<<<<<< HEAD
+            <label for="techang1">生电</label><br>
+            <input type="radio" name="techang" id="techang2" value="DIGITAL">
+            <label for="techang2">数电</label><br>
+            <input type="radio" name="techang" id="techang3" value="MECHANICAL">
+            <label for="techang3">械电</label><br>
+            <input type="radio" name="techang" id="techang4" value="BUILDING">
+            <label for="techang4">建筑</label><br>
+            <input type="radio" name="techang" id="techang5" value="CODING">
+            <label for="techang5">编程</label><br>
+            <input type="radio" name="techang" id="techang6" value="NONE">
+            <label for="techang6">无</label><br>
+=======
             <label for="techang">生电</label><br>
             <input type="radio" name="techang" id="techang2" value="DIGITAL">
             <label for="techang">数电</label><br>
@@ -157,6 +170,7 @@
             <label for="techang">编程</label><br>
             <input type="radio" name="techang" id="techang6" value="NONE">
             <label for="techang">无</label><br>
+>>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
             <button type="submit" id="submit">提交</button>
         </div>
     </form>
