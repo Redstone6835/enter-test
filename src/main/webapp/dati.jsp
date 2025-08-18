@@ -162,7 +162,7 @@
 </head>
 <body>
 <div id="main">
-    <form id="form" action="${pageContext.request.contextPath}/" method="get">
+    <form id="form" action="${pageContext.request.contextPath}/survey" method="get">
 
     </form></div>
 <script>
@@ -184,18 +184,13 @@
     }
     //跨页面接受localstorage数据
     const response = localStorage.getItem('problem');
-<<<<<<< HEAD
     const survey_result_n = localStorage.getItem('survey-result');
 
-=======
-    const survey_result = localStorage.getItem('survey-result');
->>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
     //生成答题容器函数
     function createProblem1(n){
         //问题容器
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
-<<<<<<< HEAD
         problemDiv.id = `problem` + n.toString();
         document.getElementById('form').appendChild(problemDiv);
         //题目容器
@@ -216,33 +211,11 @@
         input.rows = '7';
         input.cols = '30';
         document.getElementById(`problem` + n.toString()).appendChild(input);
-=======
-        problemDiv.id = `problem` + n;
-        document.getElementById('form').appendChild(problemDiv);
-        //题目容器
-        const titleDiv = document.createElement('div');
-        titleDiv.id = `pt` + n;
-        titleDiv.className = 'problem-title';
-        document.getElementById(`problem` + n).appendChild(titleDiv);
-        //p标签
-        const p = document.createElement('p');
-        document.getElementById(`pt` + n).appendChild(p);
-        //输入框
-        const input = document.createElement('textarea');
-        input.id = `text` + n;
-        input.type = 'text';
-        input.name = `answer` + n;
-        input.placeholder = '请输入答案';
-        input.rows = '7';
-        input.cols = '30';
-        document.getElementById(`problem` + n).appendChild(input);
->>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
     }
     function createProblem2(n,url,id){
         //问题容器
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
-<<<<<<< HEAD
         problemDiv.id = `problem` + n.toString();
         document.getElementById('form').appendChild(problemDiv);
         //题目容器
@@ -253,27 +226,11 @@
         //p标签
         const p = document.createElement('p');
         document.getElementById(`pt` + n.toString()).appendChild(p);
-=======
-        problemDiv.id = `problem` + n;
-        document.getElementById('form').appendChild(problemDiv);
-        //题目容器
-        const titleDiv = document.createElement('div');
-        titleDiv.id = `pt` + n;
-        titleDiv.className = 'problem-title';
-        document.getElementById(`problem` + n).appendChild(titleDiv);
-        //p标签
-        const p = document.createElement('p');
-        document.getElementById(`pt` + n).appendChild(p);
->>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
         //图片
         const imgDiv = document.createElement('div');
         imgDiv.className = "img";
         imgDiv.id = "img"+id.toString();
-<<<<<<< HEAD
         document.getElementById(`pt` + n.toString()).appendChild(imgDiv);
-=======
-        document.getElementById(`pt` + n).appendChild(imgDiv);
->>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
         const img = document.createElement('img');
         img.id = id;
         img.src = url;
@@ -281,7 +238,6 @@
 
         //输入框
         const input = document.createElement('textarea');
-<<<<<<< HEAD
         input.id = n.toString();
         input.className = "answer";
         input.type = 'text';
@@ -314,20 +270,8 @@
 
     if (response) {
         const { data, timestamp1 } = JSON.parse(response);
-=======
-        input.id = `text` + n;
-        input.type = 'text';
-        input.name = `answer` + n;
-        input.placeholder = '请输入答案';
-        input.rows = '7';
-        input.cols = '30';
-        document.getElementById(`problem` + n).appendChild(input);
-    }
-    if (response) {
-        const { data, timestamp } = JSON.parse(response);
->>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
         var i = 0;
-        for(i;i<22;i+=1){
+        for(i;i<9;i+=1){
             const problem = Problem.fromJson(data[i]);
             if(problem.isImg === true){
                 createProblem2(i+1,problem.imgUrl,problem.id);
@@ -347,28 +291,28 @@
         submit.type = 'submit';
         submit.value = '提交';
         document.getElementById('form').appendChild(submit);
-<<<<<<< HEAD
 
     }
 
     document.getElementById('form').addEventListener('submit',async (e) =>{
         e.preventDefault();
-        const { survey_data, timestamp2 } = JSON.parse(survey_result_n);
+        const survey_data = JSON.parse(survey_result_n);
         const sf = new FormData(e.target);
         const sfObj = Object.fromEntries(sf.entries());
         const result_Data = [];
-        for(var j = 0;j<10;j++){
+        for(var j = 0;j<9;j++){
             const answer = "answer"+(j+1).toString();
             result_Data[j] = {id: j+1,result: sfObj[answer]};
         }
         const linked_result = buildLinkedList(result_Data);
-        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data})
+
+        const linked_result_data = JSON.stringify({result : linked_result,survey_result: survey_data["data"]});
+        alert(linked_result_data);
         try {
             const response = await fetch('${pageContext.request.contextPath}/survey', {
                 method: 'POST',
                 body: linked_result_data
             });
-
             //跳转到结果页面
             window.location.href = '${pageContext.request.contextPath}/index.jsp';
         } catch (error) {
@@ -379,13 +323,6 @@
         localStorage.removeItem('problem');
         localStorage.removeItem('survey-result')
     })
-=======
-        //清除localstorage数据
-        localStorage.removeItem('problem');
-        localStorage.removeItem('survey-result')
-    }
-
->>>>>>> 07116317db16be38202b61b3a94d9f1c4a51582b
 </script>
 
 </body>
